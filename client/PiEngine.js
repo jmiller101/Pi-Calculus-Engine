@@ -1,4 +1,5 @@
 /**
+ * Holds the current state of the engine and processes the input
  *
  * @constructor
  */
@@ -7,13 +8,22 @@ function PiEngine() {
 }
 
 /**
+ * Processes a valid input
  *
  * @param {EngineInput} input
  */
 PiEngine.prototype.processInput = function(input) {
-    this.inputs.push(input);
+    if (!input.isValid) {
+        log.error('Invalid input was passed to PiEngine');
+    }
+    this.inputs.push(input.input);
 };
 
-PiEngine.prototype.print = function() {
-
+/**
+ * Prints the state of the engine
+ */
+PiEngine.prototype.printState = function() {
+    this.inputs.forEach(function(element, index, array) {
+        log.info(element);
+    });
 };

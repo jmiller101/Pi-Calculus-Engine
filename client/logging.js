@@ -20,10 +20,11 @@ Logger.prototype.logLevel = {
 
 /**
  * Logs a trace message
+ *
  * @param {String} message
  */
 Logger.prototype.trace = function(message) {
-    if (this.logLevel.TRACE >= window['log']) {
+    if (this.logLevel.TRACE >= window['LOG_LEVEL']) {
         console.log('TRACE: ' + message);
     }
 };
@@ -31,10 +32,11 @@ Logger.prototype.trace = function(message) {
 
 /**
  * Logs a debug message
+ *
  * @param {String} message
  */
 Logger.prototype.debug = function(message) {
-    if (this.logLevel.DEBUG >= window['log']) {
+    if (this.logLevel.DEBUG >= window['LOG_LEVEL']) {
         console.log('DEBUG: ' + message);
     }
 };
@@ -42,10 +44,11 @@ Logger.prototype.debug = function(message) {
 
 /**
  * Logs an informational message
+ *
  * @param {String} message
  */
 Logger.prototype.info = function(message) {
-    if (this.logLevel.INFO >= window['log']) {
+    if (this.logLevel.INFO >= window['LOG_LEVEL']) {
         console.log('INFO: ' + message);
     }
 };
@@ -53,10 +56,11 @@ Logger.prototype.info = function(message) {
 
 /**
  * Logs an error message
+ *
  * @param {String} message
  */
 Logger.prototype.warn = function(message) {
-    if (this.logLevel.WARN >= window['log']) {
+    if (this.logLevel.WARN >= window['LOG_LEVEL']) {
         console.log('WARN: ' + message);
     }
 };
