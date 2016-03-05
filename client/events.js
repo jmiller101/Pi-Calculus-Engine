@@ -1,7 +1,7 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger();
+var log = new Logger(true);
 window['LOG_LEVEL'] = log.logLevel.DEBUG;
 
 // Entry point for the engine

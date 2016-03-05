@@ -1,11 +1,15 @@
 /**
  * A simple logger
+ *
+ * @param {boolean} verbose Whether the user wants verbose output
  * @constructor
  */
-function Logger() {
+function Logger(verbose) {
+    this.verbose = verbose;
+
     this.doLog = function(level, caller, message) {
-        if (!!caller) {
-            console.log(level + '-> ' + message + '-> ' + caller );
+        if (!!caller && this.verbose) {
+            console.log(level + '-> ' + message + '-> ' + caller);
         } else {
             console.log(level + '-> ' + message);
         }
@@ -23,7 +27,6 @@ Logger.prototype.logLevel = {
     WARN: 4,
     OFF: 5
 };
-
 
 /**
  * Logs a trace message
