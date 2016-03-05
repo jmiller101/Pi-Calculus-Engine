@@ -1,7 +1,7 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger(true);
+var log = new Logger(false);
 window['LOG_LEVEL'] = log.logLevel.DEBUG;
 
 // Entry point for the engine
@@ -36,7 +36,7 @@ $(document).ready(function() {
     // Prints the state of the Pi Engine
     printEngine.mousedown(function() {
         log.debug('Printing...');
-        engine.printState();
+        log.debug(engine.toString());
     });
 });
 

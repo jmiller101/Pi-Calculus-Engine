@@ -5,7 +5,8 @@
  */
 function PiEngine() {
     this.inputs = [];
-    this.processGroupsAndAgents = [];
+    this.agents = [];
+    this.processGroups = [];
 }
 
 /**
@@ -21,19 +22,39 @@ PiEngine.prototype.processInput = function(input) {
 
     if (inputString.indexOf('=') > -1) {
         var newAgent = new Agent(inputString);
-        if (!!newAgent) {
+        if (!!newAgent && newAgent.isValid) {
             this.inputs.push(inputString);
+            this.agents.push(newAgent);
         }
     } else {
         var newProcesses = new ProcessGroup(inputString);
+        if (!!newProcesses && newProcesses.isValid) {
+            this.inputs.push(inputString);
+            this.processGroups.push(newProcesses);
+        }
     }
 };
 
 /**
- * Prints the state of the engine
+ * @this {PiEngine}
+ * @return {string}
  */
-PiEngine.prototype.printState = function() {
-    this.inputs.forEach(function(element, index, array) {
-        log.info(element);
-    });
+PiEngine.prototype.toString = function() {
+    var engineString = 'PiEngine:\n';
+
+    if (this.agents.length > 0) {
+        engineString = engineString + '\nAgents ->\n'
+    }
+    for (var i = 0; i < this.agents.length; i++) {
+        engineString = engineString + this.agents[i].toString() + '\n';
+    }
+
+    if (this.processGroups.length > 0) {
+        engineString = engineString + '\nProcessGroups ->\n'
+    }
+    for (var j = 0; j < this.processGroups.length; j++) {
+        engineString = engineString + this.processGroups[j].toString() + '\n';
+    }
+
+    return engineString;
 };
