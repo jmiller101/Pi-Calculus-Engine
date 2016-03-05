@@ -5,6 +5,7 @@
  */
 function PiEngine() {
     this.inputs = [];
+    this.processGroupsAndAgents = [];
 }
 
 /**
@@ -16,7 +17,16 @@ PiEngine.prototype.processInput = function(input) {
     if (!input.isValid) {
         log.error('Invalid input was passed to PiEngine');
     }
-    this.inputs.push(input.input);
+    var inputString = input.input;
+
+    if (inputString.indexOf('=') > -1) {
+        var newAgent = new Agent(inputString);
+        if (!!newAgent) {
+            this.inputs.push(inputString);
+        }
+    } else {
+        var newProcesses = new ProcessGroup(inputString);
+    }
 };
 
 /**

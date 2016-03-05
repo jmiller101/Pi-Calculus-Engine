@@ -1,7 +1,7 @@
 /**
  * A wrapper for the input string that validates it
  *
- * @param {String} inputString
+ * @param {string} inputString
  * @constructor
  */
 function EngineInput(inputString) {

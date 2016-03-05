@@ -43,7 +43,7 @@ $(document).ready(function() {
 /**
  * A wrapper for handling errors that occur
  *
- * @param {String} message
+ * @param {string} message
  */
 function handleError(message) {
     log.warn(message);
