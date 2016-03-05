@@ -3,6 +3,13 @@
  * @constructor
  */
 function Logger() {
+    this.doLog = function(level, caller, message) {
+        if (!!caller) {
+            console.log(level + '-> ' + message + '-> ' + caller );
+        } else {
+            console.log(level + '-> ' + message);
+        }
+    };
 }
 
 /**
@@ -25,7 +32,7 @@ Logger.prototype.logLevel = {
  */
 Logger.prototype.trace = function(message) {
     if (this.logLevel.TRACE >= window['LOG_LEVEL']) {
-        console.log('TRACE: ' + message);
+        this.doLog('TRACE', arguments.callee.caller.toString(), message);
     }
 };
 
@@ -37,7 +44,7 @@ Logger.prototype.trace = function(message) {
  */
 Logger.prototype.debug = function(message) {
     if (this.logLevel.DEBUG >= window['LOG_LEVEL']) {
-        console.log('DEBUG: ' + message);
+        this.doLog('DEBUG', arguments.callee.caller.toString(), message);
     }
 };
 
@@ -49,7 +56,7 @@ Logger.prototype.debug = function(message) {
  */
 Logger.prototype.info = function(message) {
     if (this.logLevel.INFO >= window['LOG_LEVEL']) {
-        console.log('INFO: ' + message);
+        this.doLog('INFO', arguments.callee.caller.toString(), message);
     }
 };
 
@@ -61,6 +68,6 @@ Logger.prototype.info = function(message) {
  */
 Logger.prototype.warn = function(message) {
     if (this.logLevel.WARN >= window['LOG_LEVEL']) {
-        console.log('WARN: ' + message);
+        this.doLog('WARN', arguments.callee.caller.toString(), message);
     }
 };
