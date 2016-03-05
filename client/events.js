@@ -1,44 +1,44 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger(false);
-window['LOG_LEVEL'] = log.logLevel.DEBUG;
+var log = new Logger(false, LogLevel.DEBUG);
 
 // Entry point for the engine
 $(document).ready(function() {
-    var engineInput = $('#engineInput');
-    var clearEngine = $('#clearEngine');
-    var printEngine = $('#printEngine');
+  var engineInput = $('#engineInput');
+  var clearEngine = $('#clearEngine');
+  var printEngine = $('#printEngine');
 
-    // Entry point for the Pi Engine
-    engineInput.keydown(function(e) {
-        var key = e.keyCode || e.which;
+  // Entry point for the Pi Engine
+  engineInput.keydown(function(e) {
+    var key = e.keyCode || e.which;
 
-        if (key == 13) {
-            e.preventDefault();
-            var input = new EngineInput(engineInput.val());
+    if (key == 13) {
+      e.preventDefault();
+      var input = new EngineInput(engineInput.val());
 
-            if (input.isValid) {
-                engine.processInput(input);
-                engineInput.val('');
-            } else {
-                handleError('Input was invalid!');
-            }
-        }
-    });
+      if (input.isValid) {
+        engine.processInput(input);
+        engineInput.val('');
+      } else {
+        handleError('Input was invalid!');
+      }
+    }
+  });
 
-    // Clears the Pi Engine
-    clearEngine.mousedown(function() {
-        log.debug('Clearing...');
-        engine = new PiEngine();
-    });
+  // Clears the Pi Engine
+  clearEngine.mousedown(function() {
+    log.debug('Clearing...');
+    engine = new PiEngine();
+  });
 
-    // Prints the state of the Pi Engine
-    printEngine.mousedown(function() {
-        log.debug('Printing...');
-        log.debug(engine.toString());
-    });
+  // Prints the state of the Pi Engine
+  printEngine.mousedown(function() {
+    log.debug('Printing...');
+    log.debug(engine.toString());
+  });
 });
+
 
 /**
  * A wrapper for handling errors that occur
@@ -46,5 +46,5 @@ $(document).ready(function() {
  * @param {string} message
  */
 function handleError(message) {
-    log.warn(message);
+  log.warn(message);
 }

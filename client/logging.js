@@ -1,42 +1,50 @@
+
+
+
 /**
  * A simple logger
  *
- * @param {boolean} verbose Whether the user wants verbose output
+ * @param {boolean} verbose   Whether the user wants verbose output
+ * @param {number} logLevel The log level
  * @constructor
  */
-function Logger(verbose) {
-    this.verbose = verbose;
+function Logger(verbose, logLevel) {
+  this.verbose = verbose;
+  this.logLevel = logLevel;
 
-    this.doLog = function(level, caller, message) {
-        if (!!caller && this.verbose) {
-            console.log(level + '-> ' + message + '-> ' + caller);
-        } else {
-            console.log(level + '-> ' + message);
-        }
-    };
+  this.doLog = function(level, caller, message) {
+    if (!!caller && this.verbose) {
+      console.log(level + '-> ' + message + '-> ' + caller);
+    } else {
+      console.log(level + '-> ' + message);
+    }
+  };
 }
+
 
 /**
  * This enum defines the different levels of logging.
  * @type {{TRACE: number, DEBUG: number, INFO: number, WARN: number, OFF: number}}
  */
-Logger.prototype.logLevel = {
-    TRACE: 1,
-    DEBUG: 2,
-    INFO: 3,
-    WARN: 4,
-    OFF: 5
+LogLevel = {
+  TRACE: 1,
+  DEBUG: 2,
+  INFO: 3,
+  WARN: 4,
+  OFF: 5
 };
+
 
 /**
  * Logs a trace message
  *
  * @param {string} message
+ * @this {Logger}
  */
 Logger.prototype.trace = function(message) {
-    if (this.logLevel.TRACE >= window['LOG_LEVEL']) {
-        this.doLog('TRACE', arguments.callee.caller.toString(), message);
-    }
+  if (LogLevel.TRACE >= this.logLevel) {
+    this.doLog('TRACE', arguments.callee.caller.toString(), message);
+  }
 };
 
 
@@ -44,11 +52,12 @@ Logger.prototype.trace = function(message) {
  * Logs a debug message
  *
  * @param {string} message
+ * @this {Logger}
  */
 Logger.prototype.debug = function(message) {
-    if (this.logLevel.DEBUG >= window['LOG_LEVEL']) {
-        this.doLog('DEBUG', arguments.callee.caller.toString(), message);
-    }
+  if (LogLevel.DEBUG >= this.logLevel) {
+    this.doLog('DEBUG', arguments.callee.caller.toString(), message);
+  }
 };
 
 
@@ -56,11 +65,12 @@ Logger.prototype.debug = function(message) {
  * Logs an informational message
  *
  * @param {string} message
+ * @this {Logger}
  */
 Logger.prototype.info = function(message) {
-    if (this.logLevel.INFO >= window['LOG_LEVEL']) {
-        this.doLog('INFO', arguments.callee.caller.toString(), message);
-    }
+  if (LogLevel.INFO >= this.logLevel) {
+    this.doLog('INFO', arguments.callee.caller.toString(), message);
+  }
 };
 
 
@@ -68,9 +78,10 @@ Logger.prototype.info = function(message) {
  * Logs an error message
  *
  * @param {string} message
+ * @this {Logger}
  */
 Logger.prototype.warn = function(message) {
-    if (this.logLevel.WARN >= window['LOG_LEVEL']) {
-        this.doLog('WARN', arguments.callee.caller.toString(), message);
-    }
+  if (LogLevel.WARN >= this.logLevel) {
+    this.doLog('WARN', arguments.callee.caller.toString(), message);
+  }
 };
