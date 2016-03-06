@@ -1,6 +1,3 @@
-
-
-
 /**
  * Holds an agent
  *
@@ -96,8 +93,64 @@ function ProcessGroup(processesString) {
     return sequentialList;
   };
 
+  this.doParallelProcesses = function(parallelProcessArray) {
+    if (parallelProcessArray.length > 1) {
+      var processOrder = this.getSuffledList(0, parallelProcessArray.length);
+      for (var toProcess in processOrder) {
+        this.doSequentialProcesses(parallelProcessArray[toProcess]);
+      }
+    } else if (parallelProcessArray.length > 0) {
+      this.doSequentialProcesses(parallelProcessArray[0]);
+    } else {
+      handleError('Error executing process group: sequential process array ' +
+          'is invalid');
+    }
+  };
+
+  this.doSequentialProcesses = function(sequentialProcessArray) {
+    for (var process in sequentialProcessArray) {
+      process.doProcess();
+    }
+  };
+
+  this.getRandom = function(min, max) {
+    return Math.random() * (max - min) + min;
+  };
+
+  this.getSuffledList = function(min, max) {
+    var array = [];
+
+    for (var i = min; i < max; i++) {
+      array.push(i);
+    }
+    for (var j = 0; j < array.length; j++) {
+      var place = this.getRandom(0, array.length);
+      var temp = array[j];
+      array[j] = array[place];
+      array[place] = temp;
+    }
+
+    return array;
+  };
+
   this.setProcesses();
 }
+
+
+/**
+ * Executes a process group
+ */
+ProcessGroup.prototype.doProcesses = function() {
+  if (this.indeterminates.length > 1) {
+    var groupToProcess = this.getRandom(0, this.indeterminates.length);
+    this.doParallelProcesses(this.indeterminates[groupToProcess]);
+  } else if (this.indeterminates.length > 0) {
+    this.doParallelProcesses(this.indeterminates[0]);
+  } else {
+    handleError('Error executing process group: parallel process array is ' +
+        'invalid');
+  }
+};
 
 
 /**

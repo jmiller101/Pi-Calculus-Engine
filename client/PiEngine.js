@@ -1,6 +1,3 @@
-
-
-
 /**
  * Holds the current state of the engine and processes the input
  *
@@ -31,7 +28,7 @@ PiEngine.prototype.processInput = function(input) {
     var newAgent = new Agent(inputString);
     if (!!newAgent && newAgent.isValid) {
       this.inputs.push(inputString);
-      this.agents[newAgent.agentName] = newAgent.processes;
+      this.agents[newAgent.agentName] = newAgent;
     }
   } else {
     var newProcesses = new ProcessGroup(inputString);
@@ -59,12 +56,12 @@ PiEngine.prototype.addChannel = function(channel) {
 
 
 /**
+ * Adds a variable to the engine
  *
- * @param {string} variableName
- * @param {string} channelName
+ * @param {Variable} variable
  */
-PiEngine.prototype.addVariable = function(variableName, channelName) {
-
+PiEngine.prototype.addVariable = function(variable) {
+  this.variables[variable.variableName] = variable;
 };
 
 
