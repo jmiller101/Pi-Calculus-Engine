@@ -2,133 +2,101 @@
 
 
 /**
- * Holds an agent
- *
- * @param {string} agentString
- * @constructor
- */
-function Agent(agentString) {
-  var strings = agentString.split(/=/);
-  this.agentName = strings[0].trim();
-  this.processes = new ProcessGroup(strings[1].trim());
-  this.isValid = this.processes.isValid;
-  log.debug(this.toString());
-}
-
-
-/**
- * @this {Agent}
- * @return {string}
- */
-Agent.prototype.toString = function() {
-  var agentString = 'Agent name: \'' + this.agentName + '\' ->\n';
-  return agentString + this.processes.toString();
-};
-
-
-
-/**
- * Holds a group of related processes
- *
- * @param {string} processesString
- * @constructor
- */
-function ProcessGroup(processesString) {
-  this.indeterminates = [];
-  this.isValid = true;
-
-  /**
-   * Sets all of the processes in the input string
-   *
-   * @this {ProcessGroup}
-   */
-  this.setProcesses = function() {
-    var indeterminateStrings = processesString.split('\+');
-    for (var i = 0; i < indeterminateStrings.length; i++) {
-      var parallelList = this.setParallel(indeterminateStrings[i]);
-      this.indeterminates.push(parallelList);
-    }
-    log.debug(this.toString());
-  };
-
-  /**
-   * Gets a list of parallel processes from each indeterminate process
-   *
-   * @param {string} indeterminateString
-   * @this {ProcessGroup}
-   * @return {Process[][]} A list of parallel processes
-   */
-  this.setParallel = function(indeterminateString) {
-    var parallelStrings = indeterminateString.trim().split('\|');
-    var parallelList = [];
-
-    for (var i = 0; i < parallelStrings.length; i++) {
-      var sequentialList = this.setSequential(parallelStrings[i]);
-      parallelList.push(sequentialList);
-    }
-
-    return parallelList;
-  };
-
-  /**
-   * Gets a list of sequential processes from each parallel process
-   *
-   * @param {string} parallelString The parallel process string
-   * @this {ProcessGroup}
-   * @return {Process[]}
-   */
-  this.setSequential = function(parallelString) {
-    var sequentialStrings = parallelString.trim().split('\.');
-    var sequentialList = [];
-
-    for (var i = 0; i < sequentialStrings.length; i++) {
-      var processString = sequentialStrings[i].trim();
-      log.info('Process string found: \'' + processString + '\'');
-      var process = new Process(processString);
-      if (process.isValid) {
-        sequentialList.push(process);
-      } else {
-        this.isValid = false;
-        log.warn('Invalid process: \'' + processString + '\'');
-      }
-    }
-
-    return sequentialList;
-  };
-
-  this.setProcesses();
-}
-
-
-/**
- * @this {ProcessGroup}
- * @return {string}
- */
-ProcessGroup.prototype.toString = function() {
-  var groupString = '';
-  for (var i = 0; i < this.indeterminates.length; i++) {
-    var parallels = this.indeterminates[i];
-    groupString = groupString + 'Indeterminate[' + i + ']:\n';
-    for (var j = 0; j < parallels.length; j++) {
-      var sequentials = parallels[j];
-      groupString = groupString + '\t\t\tParallel[' + j + ']:\n';
-      for (var k = 0; k < sequentials.length; k++) {
-        groupString = groupString + '\t\t\t\tSequential[' + k + ']: \'' +
-            sequentials[k].process + '\'\n';
-      }
-    }
-  }
-  return groupString;
-};
-
-
-
-/**
+ * Holds a process
  *
  * @param {string} processString
  * @constructor
  */
 function Process(processString) {
   this.process = processString;
-  this.isValid = true;
+  this.isValid = false;
+  this.type = null;
+  this.content = {};
+
+  if (processString.indexOf('?') > -1) {
+    this.type = 'read';
+    var readStrings = processString.split(/\?/);
+    this.content['channel'] = readStrings[0].trim();
+    this.content['variable'] = readStrings[1].trim();
+
+  } else if (processString.indexOf('!') > -1) {
+    this.type = 'write';
+    var writeStrings = processString.split(/!/);
+    this.content['channel'] = writeStrings[0].trim();
+    this.content['value'] = writeStrings[1].trim();
+  } else if (processString.indexOf('print') > -1) {
+    this.type = 'print';
+    this.content['toPrint'] = [];
+    var thingsToPrint = this.getParenthesesValues(processString).split(/,/);
+    for (var string in thingsToPrint) {
+      this.content['toPrint'].push(string);
+    }
+  } else if (processString.indexOf('new') > -1) {
+    this.type = 'new';
+    var channelsToMake = this.getParenthesesValues(processString).split(/,/);
+    for (var channelString in channelsToMake) {
+      engine.channels.push(new Channel(channelString));
+    }
+  } else {
+    this.type = 'agent';
+    this.content['agent'] = processString.trim();
+  }
+
+  /**
+   * Utility function to get a value from between parentheses
+   *
+   * @param {string} parenthesesString
+   * @return {Array|{index: number, input: string}}
+   */
+  this.getParenthesesValues = function(parenthesesString) {
+    var betweenParens = /\(([^)]+)\)/;
+    return betweenParens.exec(parenthesesString);
+  };
+}
+
+
+
+/**
+ * Holds a channel
+ *
+ * @param {string} channelName
+ * @constructor
+ */
+function Channel(channelName) {
+  this.channelName = channelName;
+  this.content = [];
+}
+
+
+/**
+ * Returns the earliest thing added to the content array
+ *
+ * @return {object}
+ */
+Channel.prototype.read = function() {
+  return this.content.shift();
+};
+
+
+/**
+ * Pushes a new piece of content into the channel
+ *
+ * @param {object} content
+ * @return {Number}
+ */
+Channel.prototype.write = function(content) {
+  return this.content.push(content);
+};
+
+
+
+/**
+ * Holds a variable
+ *
+ * @param {string} variableName
+ * @constructor
+ */
+function Variable(variableName) {
+  this.variableName = variableName;
+  this.content = null;
 }

@@ -34,7 +34,6 @@ $(document).ready(function() {
 
   // Prints the state of the Pi Engine
   printEngine.mousedown(function() {
-    log.debug('Printing...');
     log.debug(engine.toString());
   });
 });
