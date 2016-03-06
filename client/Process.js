@@ -6,7 +6,7 @@
  */
 function Process(processString) {
   this.process = processString;
-  this.isValid = false;
+  this.isValid = true;
   this.type = null;
   this.content = {};
 
@@ -32,9 +32,10 @@ function Process(processString) {
   };
 
   this.doRead = function() {
-    var engineVariable = engine.variables[this.content['variable']];
-    var engineChannel = engine.channels[this.content['channel']];
-    engineVariable.content = engineChannel.read();
+    var variable = new Variable(this.content['variable']);
+    engine.addVariable(variable);
+    var channel = engine.channels[this.content['channel']];
+    variable.content = channel.read();
   };
 
   this.initWrite = function() {
