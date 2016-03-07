@@ -1,6 +1,12 @@
 /**
  * Initializes and executes a process
  *
+ * The init methods are run at the time that a new process string is read for
+ * the user
+ *
+ * The do methods are run at the time that a use presses 'execute' on the web
+ * page
+ *
  * @param {string} processString
  * @constructor
  */
@@ -224,7 +230,7 @@ ProcessType = {
 
 
 /**
- * Executes the process
+ * Executes the process according to the type of process that it is
  * @this {Process}
  */
 Process.prototype.doProcess = function() {

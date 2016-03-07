@@ -27,6 +27,16 @@ Agent.prototype.toString = function() {
 /**
  * Holds a group of related processes
  *
+ * The way that the processes are stored is directly related to the order of
+ * operations that the execution happens in:
+ *
+ * this.indeterminates is an array that holds an array of parallel processes
+ * this.indeterminates[i] is an array that holds an array of sequential
+ *  processes
+ * this.indeterminates[i][j] is an array of sequential processes
+ *
+ * See the README for a more thorough explanation
+ *
  * @param {string} processesString
  * @constructor
  */
