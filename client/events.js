@@ -1,13 +1,14 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger(false, LogLevel.DEBUG);
+var log = new Logger(false, LogLevel.TRACE);
 
 // Entry point for the engine
 $(document).ready(function() {
   var engineInput = $('#engineInput');
   var clearEngine = $('#clearEngine');
   var printEngine = $('#printEngine');
+  var executeEngine = $('#executeEngine');
 
   // Entry point for the Pi Engine
   engineInput.keydown(function(e) {
@@ -24,6 +25,11 @@ $(document).ready(function() {
         handleError('Input was invalid!');
       }
     }
+  });
+
+  executeEngine.mousedown(function() {
+    log.debug('Executing...');
+    engine.execute();
   });
 
   // Clears the Pi Engine

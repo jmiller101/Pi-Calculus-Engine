@@ -8,9 +8,27 @@ function PiEngine() {
   this.agents = {};
   this.processGroups = [];
 
+  this.isExecuted = false;
   this.channels = {};
   this.variables = {};
 }
+
+
+/**
+ * Executes the engine based on what's been loaded
+ */
+PiEngine.prototype.execute = function() {
+  if (this.processGroups.length > 0) {
+    this.channels = {};
+    this.variables = {};
+    for (var i = 0; i < this.processGroups.length; i++) {
+      this.processGroups[i].doProcesses();
+    }
+    this.isExecuted = true;
+  } else {
+    log.debug('There are no current processes');
+  }
+};
 
 
 /**
@@ -25,12 +43,14 @@ PiEngine.prototype.processInput = function(input) {
   var inputString = input.input;
 
   if (inputString.indexOf('=') > -1) {
+    log.debug('Making new agent');
     var newAgent = new Agent(inputString);
     if (!!newAgent && newAgent.isValid) {
       this.inputs.push(inputString);
       this.agents[newAgent.agentName] = newAgent;
     }
   } else {
+    log.debug('Making new processGroup');
     var newProcesses = new ProcessGroup(inputString);
     if (!!newProcesses && newProcesses.isValid) {
       this.inputs.push(inputString);
@@ -70,24 +90,43 @@ PiEngine.prototype.addVariable = function(variable) {
  * @return {string}
  */
 PiEngine.prototype.toString = function() {
-  var engineString = 'PiEngine:\n';
+  var engineString = [];
+  engineString.push('State:\n');
 
   if (!jQuery.isEmptyObject(this.agents)) {
-    engineString = engineString + '\nAgents ->\n';
-  }
-  var agentKeys = Object.keys(this.agents);
-  for (var i = 0; i < agentKeys.length; i++) {
-    var agentName = agentKeys[i];
-    engineString = engineString + 'Agent name: \'' + agentName + '\' ->\n';
-    engineString = engineString + this.agents[agentName].toString() + '\n';
+    engineString.push('\nAgents ->\n');
+    var agentKeys = Object.keys(this.agents);
+    for (var i = 0; i < agentKeys.length; i++) {
+      engineString.push('Agent name: \'' + agentKeys[i] + '\' ->\n');
+      engineString.push(this.agents[agentKeys[i]].toString() + '\n');
+    }
   }
 
   if (this.processGroups.length > 0) {
-    engineString = engineString + '\nProcessGroups ->\n';
-  }
-  for (var j = 0; j < this.processGroups.length; j++) {
-    engineString = engineString + this.processGroups[j].toString() + '\n';
+    engineString.push('\nProcessGroups ->\n');
+    for (var j = 0; j < this.processGroups.length; j++) {
+      engineString.push(this.processGroups[j].toString() + '\n');
+    }
   }
 
-  return engineString;
+  if (this.isExecuted) {
+    engineString.push('Executed:\n');
+    if (!jQuery.isEmptyObject(this.channels)) {
+      engineString.push('\nChannels ->\n');
+      var channelKeys = Object.keys(this.channels);
+      for (var k = 0; k < channelKeys.length; k++) {
+        engineString.push(this.channels[channelKeys[k]].toString());
+      }
+    }
+
+    if (!jQuery.isEmptyObject(this.variables)) {
+      engineString.push('\nVariables ->\n');
+      var variableKeys = Object.keys(this.variables);
+      for (var l = 0; l < variableKeys.length; l++) {
+        engineString.push(this.variables[variableKeys[l]].toString());
+      }
+    }
+  }
+
+  return engineString.join().replace(/,/g, '');
 };

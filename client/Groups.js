@@ -95,7 +95,7 @@ function ProcessGroup(processesString) {
 
   this.doParallelProcesses = function(parallelProcessArray) {
     if (parallelProcessArray.length > 1) {
-      var processOrder = this.getSuffledList(0, parallelProcessArray.length);
+      var processOrder = this.getShuffledList(0, parallelProcessArray.length);
       for (var toProcess in processOrder) {
         this.doSequentialProcesses(parallelProcessArray[toProcess]);
       }
@@ -108,16 +108,31 @@ function ProcessGroup(processesString) {
   };
 
   this.doSequentialProcesses = function(sequentialProcessArray) {
-    for (var process in sequentialProcessArray) {
-      process.doProcess();
+    for (var i = 0; i < sequentialProcessArray.length; i++) {
+      sequentialProcessArray[i].doProcess();
     }
   };
 
+  /**
+   * Helper function to get a random number in a range
+   *
+   * @param {Number} min  Lower limit (inclusive)
+   * @param {Number} max  Upper limit (exclusive)
+   * @return {number}
+   */
   this.getRandom = function(min, max) {
-    return Math.random() * (max - min) + min;
+    return Math.floor(Math.random() * (max - min) + min);
   };
 
-  this.getSuffledList = function(min, max) {
+  /**
+   * Helper function to return a shuffled array of values in a range
+   *
+   * @param {Number} min  Lower limit (inclusive)
+   * @param {Number} max  Upper limit (exclusive)
+   * @this {ProcessGroup}
+   * @return {Array}
+   */
+  this.getShuffledList = function(min, max) {
     var array = [];
 
     for (var i = min; i < max; i++) {
@@ -143,6 +158,7 @@ function ProcessGroup(processesString) {
 ProcessGroup.prototype.doProcesses = function() {
   if (this.indeterminates.length > 1) {
     var groupToProcess = this.getRandom(0, this.indeterminates.length);
+    log.debug('Parallel group to process: ' + groupToProcess);
     this.doParallelProcesses(this.indeterminates[groupToProcess]);
   } else if (this.indeterminates.length > 0) {
     this.doParallelProcesses(this.indeterminates[0]);
