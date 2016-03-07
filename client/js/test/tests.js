@@ -4,11 +4,12 @@
  */
 function TestRunner() {
   this.doTests = function() {
+    var oldLogLevel = log.logLevel;
     log = new Logger(false, LogLevel.TEST);
     this.sequenceTest();
     this.parallelTest();
     this.indeterminateTest();
-    log = new Logger(false, LogLevel.TRACE);
+    log = new Logger(false, oldLogLevel);
   };
 
   this.sequenceTest = function() {

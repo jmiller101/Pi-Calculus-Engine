@@ -23,6 +23,8 @@ simple, so what does that entail?
   4. Click 'execute'
   5. Clear the engine for new commands by clicking 'clear' or enter more commands and execute again
 
+To run the tests click on the 'test engine' button.
+
 ---
 ###Syntax
 New agent (note: in order to run an agent, just call it as like a process):

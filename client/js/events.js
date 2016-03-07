@@ -1,7 +1,7 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger(false, LogLevel.TRACE);
+var log = new Logger(false, LogLevel.OUTPUT);
 
 // Entry point for the engine
 $(document).ready(function() {
