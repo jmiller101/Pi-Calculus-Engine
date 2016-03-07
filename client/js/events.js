@@ -9,6 +9,7 @@ $(document).ready(function() {
   var clearEngine = $('#clearEngine');
   var printEngine = $('#printEngine');
   var executeEngine = $('#executeEngine');
+  var testEngine = $('#testEngine');
 
   // Entry point for the Pi Engine
   engineInput.keydown(function(e) {
@@ -41,6 +42,12 @@ $(document).ready(function() {
   // Prints the state of the Pi Engine
   printEngine.mousedown(function() {
     log.debug(engine.toString());
+  });
+
+  // Runs the engine test
+  testEngine.mousedown(function() {
+    new TestRunner();
+    engine = new PiEngine();
   });
 });
 

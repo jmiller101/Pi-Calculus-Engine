@@ -11,6 +11,9 @@ function PiEngine() {
   this.isExecuted = false;
   this.channels = {};
   this.variables = {};
+
+  this.outputs = [];
+  this.errors = [];
 }
 
 
@@ -82,6 +85,48 @@ PiEngine.prototype.addChannel = function(channel) {
  */
 PiEngine.prototype.addVariable = function(variable) {
   this.variables[variable.variableName] = variable;
+};
+
+
+/**
+ * Adds a string to the output
+ *
+ * @param {string} output
+ */
+PiEngine.prototype.addOutput = function(output) {
+  log.output(output);
+  this.outputs.push(output);
+};
+
+
+/**
+ * Gets all of the outputs in a single string
+ *
+ * @return {string}
+ */
+PiEngine.prototype.getOutput = function() {
+  return this.outputs.join(',');
+};
+
+
+/**
+ * Adds a string to the output
+ *
+ * @param {string} error
+ */
+PiEngine.prototype.addError = function(error) {
+  log.warn(error);
+  this.errors.push(error);
+};
+
+
+/**
+ * Gets all of the outputs in a single string
+ *
+ * @return {string}
+ */
+PiEngine.prototype.getErrors = function() {
+  return this.errors.join(',');
 };
 
 

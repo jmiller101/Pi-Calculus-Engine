@@ -21,7 +21,7 @@ function Logger(verbose, logLevel) {
 
 /**
  * This enum defines the different levels of logging.
- * @type {{TRACE: number, DEBUG: number, INFO: number, WARN: number, OFF: number, OUTPUT: number}}
+ * @type {{TRACE: number, DEBUG: number, INFO: number, WARN: number, OFF: number, OUTPUT: number, TEST: number}}
  */
 LogLevel = {
   TRACE: 1,
@@ -29,7 +29,8 @@ LogLevel = {
   INFO: 3,
   WARN: 4,
   OFF: 5,
-  OUTPUT: 6
+  OUTPUT: 6,
+  TEST: 7
 };
 
 
@@ -86,7 +87,7 @@ Logger.prototype.warn = function(message) {
 
 
 /**
- * Logs an error message
+ * Logs a program output message
  *
  * @param {string} message
  * @this {Logger}
@@ -94,5 +95,18 @@ Logger.prototype.warn = function(message) {
 Logger.prototype.output = function(message) {
   if (LogLevel.OUTPUT >= this.logLevel) {
     this.doLog('OUTPUT', arguments.callee.caller.toString(), message);
+  }
+};
+
+
+/**
+ * Logs a test output message
+ *
+ * @param {string} message
+ * @this {Logger}
+ */
+Logger.prototype.test = function(message) {
+  if (LogLevel.TEST >= this.logLevel) {
+    this.doLog('TEST', arguments.callee.caller.toString(), message);
   }
 };

@@ -44,7 +44,7 @@ function Process(processString) {
         if (checkString(thingsToWrite[i])) {
           this.content['variable'].push(thingsToWrite[i]);
         } else {
-          log.output('Found invalid value in read');
+          engine.addError('Found invalid value in read');
         }
       }
     } else {
@@ -61,7 +61,7 @@ function Process(processString) {
         engine.addVariable(variable);
       }
     } else {
-      log.output('Cannot write to uninitialized channel: ' +
+      engine.addError('Cannot write to uninitialized channel: ' +
           this.content['channel']);
     }
   };
@@ -79,7 +79,7 @@ function Process(processString) {
         if (checkString(thingsToWrite[i])) {
           this.content['value'].push(thingsToWrite[i]);
         } else {
-          log.output('Found invalid value in write');
+          engine.addError('Found invalid value in write');
         }
       }
     } else {
@@ -98,13 +98,13 @@ function Process(processString) {
           if (!!variable) {
             channel.write(variable.content);
           } else {
-            log.output('Cannot output from uninitialized variable: ' +
+            engine.addError('Cannot output from uninitialized variable: ' +
                 this.content['value'][i]);
           }
         }
       }
     } else {
-      log.output('Channel \'' + this.content['channel'] + '\' has not ' +
+      engine.addError('Channel \'' + this.content['channel'] + '\' has not ' +
           'been initialized');
     }
   };
@@ -119,7 +119,7 @@ function Process(processString) {
         log.debug('Adding \'' + thingsToPrint[i] + '\' to print later');
         this.content['toPrint'].push(thingsToPrint[i]);
       } else {
-        log.output(thingsToPrint[i] + ' cannot be printed');
+        engine.addError(thingsToPrint[i] + ' cannot be printed');
       }
     }
   };
@@ -139,9 +139,9 @@ function Process(processString) {
         typeToPrint = 'Variable string';
       }
       if (!!valueToPrint) {
-        log.output(valueToPrint);
+        engine.addOutput(valueToPrint);
       } else {
-        log.output('There are no values to print from ' + string);
+        engine.addError('There are no values to print from ' + string);
       }
     }
   };
@@ -155,7 +155,7 @@ function Process(processString) {
       if (checkString(channelsToMake[i])) {
         this.content['channels'].push(channelsToMake[i]);
       } else {
-        log.output('Channel was invalid: ' + channelsToMake[i]);
+        engine.addError('Channel was invalid: ' + channelsToMake[i]);
       }
     }
   };
@@ -177,7 +177,7 @@ function Process(processString) {
     if (!!agent) {
       agent.processes.doProcesses();
     } else {
-      log.output('Agent \'' + this.content['agent'] + '\' has not been ' +
+      engine.addError('Agent \'' + this.content['agent'] + '\' has not been ' +
           'initialized');
     }
   };
