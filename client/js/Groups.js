@@ -106,8 +106,8 @@ function ProcessGroup(processesString) {
   this.doParallelProcesses = function(parallelProcessArray) {
     if (parallelProcessArray.length > 1) {
       var processOrder = this.getShuffledList(0, parallelProcessArray.length);
-      for (var toProcess in processOrder) {
-        this.doSequentialProcesses(parallelProcessArray[toProcess]);
+      for (var i = 0; i < processOrder.length; i++) {
+        this.doSequentialProcesses(parallelProcessArray[processOrder[i]]);
       }
     } else if (parallelProcessArray.length > 0) {
       this.doSequentialProcesses(parallelProcessArray[0]);
@@ -128,9 +128,12 @@ function ProcessGroup(processesString) {
    *
    * @param {Number} min  Lower limit (inclusive)
    * @param {Number} max  Upper limit (exclusive)
-   * @return {number}
+   * @return {Number}
    */
   this.getRandom = function(min, max) {
+    if (max - min < 2) {
+      return Math.round(Math.random());
+    }
     return Math.floor(Math.random() * (max - min) + min);
   };
 
@@ -140,7 +143,7 @@ function ProcessGroup(processesString) {
    * @param {Number} min  Lower limit (inclusive)
    * @param {Number} max  Upper limit (exclusive)
    * @this {ProcessGroup}
-   * @return {Array}
+   * @return {Number[]}
    */
   this.getShuffledList = function(min, max) {
     var array = [];
@@ -153,6 +156,9 @@ function ProcessGroup(processesString) {
       var temp = array[j];
       array[j] = array[place];
       array[place] = temp;
+    }
+    for (var k = 0; k < array.length; k++) {
+      log.debug('Random array [' + k + ']: ' + array[k]);
     }
 
     return array;
@@ -168,7 +174,7 @@ function ProcessGroup(processesString) {
 ProcessGroup.prototype.doProcesses = function() {
   if (this.indeterminates.length > 1) {
     var groupToProcess = this.getRandom(0, this.indeterminates.length);
-    log.debug('Parallel group to process: ' + groupToProcess);
+    log.debug('Indeterminate group to process: ' + groupToProcess);
     this.doParallelProcesses(this.indeterminates[groupToProcess]);
   } else if (this.indeterminates.length > 0) {
     this.doParallelProcesses(this.indeterminates[0]);
