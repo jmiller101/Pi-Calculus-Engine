@@ -76,8 +76,10 @@ Write string literal to channel:
 
 Run processes in "parallel":
 `<process> | <process>`
+
 Run one process at random:
 `<process> + <process>`
+
 Run processes sequentially:
 `<process> . <process>`
 
