@@ -30,7 +30,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -44,7 +44,7 @@ function TestRunner() {
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -58,7 +58,7 @@ function TestRunner() {
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -72,7 +72,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -86,7 +86,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -100,7 +100,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -115,7 +115,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -131,7 +131,7 @@ function TestRunner() {
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -148,7 +148,7 @@ function TestRunner() {
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -165,7 +165,7 @@ function TestRunner() {
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 
@@ -182,7 +182,7 @@ function TestRunner() {
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
-      log.test('TEST FAIL\n\n');
+      log.test('TEST FAIL: ' + engine.getErrors() + '\n\n');
     }
   };
 

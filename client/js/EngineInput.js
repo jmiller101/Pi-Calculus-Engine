@@ -33,7 +33,7 @@ EngineInput.prototype.validateInput = function() {
   }, this);
 
   if (this.parentheses != 0) {
-    log.trace('Input had unmatched parentheses');
+    log.warn('Input had unmatched parentheses');
     return;
   }
   this.isValid = true;
@@ -48,13 +48,13 @@ EngineInput.prototype.validateInput = function() {
  */
 function checkString(string) {
   if (typeof string != 'string') {
-    log.trace('Input was not of type \'string\'');
+    log.warn('Input was not of type \'string\'');
     return false;
   } else if (!string) {
-    log.trace('Input failed the test \'!string\'');
+    log.warn('Input failed the test \'!string\'');
     return false;
   } else if (string.replace(/\s/g, '') == '') {
-    log.trace('Input was only whitespace');
+    log.warn('Input was only whitespace');
     return false;
   }
 

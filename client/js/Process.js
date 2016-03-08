@@ -58,7 +58,7 @@ function Process(processString) {
       for (var i = 0; i < this.content['variable'].length; i++) {
         var readValue = channel.read();
         var variable = new Variable(this.content['variable'][i]);
-        log.output('Reading \'' + readValue + '\' from channel ' +
+        log.info('Reading \'' + readValue + '\' from channel ' +
             channel.channelName + ' to variable ' + variable.variableName);
         variable.content = readValue;
         engine.addVariable(variable);
@@ -98,13 +98,13 @@ function Process(processString) {
     if (!!channel) {
       for (var i = 0; i < this.content['value'].length; i++) {
         if (this.content['value'][i].indexOf('\'') > -1) {
-          log.output('Writing ' + this.content['value'][i] + ' to the ' +
+          log.info('Writing ' + this.content['value'][i] + ' to the ' +
               'channel ' + channel.channelName);
           channel.write(this.content['value'][i]);
         } else {
           var variable = engine.variables[this.content['value'][i]];
           if (!!variable) {
-            log.output('Writing \'' + variable.content + '\' to the channel ' +
+            log.info('Writing \'' + variable.content + '\' to the channel ' +
                 channel.channelName);
             channel.write(variable.content);
           } else {
@@ -175,7 +175,7 @@ function Process(processString) {
   this.doChannel = function() {
     for (var i = 0; i < this.content['channels'].length; i++) {
       var newChannel = new Channel(this.content['channels'][i]);
-      log.output('Created new channel ' + newChannel.channelName);
+      log.info('Created new channel ' + newChannel.channelName);
       engine.addChannel(newChannel);
     }
   };
@@ -188,7 +188,7 @@ function Process(processString) {
   this.doAgent = function() {
     var agent = engine.agents[this.content['agent']];
     if (!!agent) {
-      log.output('Processing agent ' + agent.agentName);
+      log.info('Processing agent ' + agent.agentName);
       agent.processes.doProcesses();
     } else {
       engine.addError('Agent \'' + this.content['agent'] + '\' has not been ' +
@@ -259,7 +259,7 @@ Process.prototype.doProcess = function() {
   } else if (this.type == ProcessType.AGENT) {
     this.doAgent();
   } else {
-    handleError('Process doesn\'t have a valid type!');
+    log.warn('Process doesn\'t have a valid type!');
   }
 };
 
@@ -302,6 +302,25 @@ Channel.prototype.write = function(content) {
 };
 
 
+/**
+ * Returns the channel in string form
+ *
+ * @this {Channel}
+ * @return {string}
+ */
+Channel.prototype.toString = function() {
+  var channelString = ['Channel name: \'' + this.channelName + '\' ->\n'];
+  if (this.content.length > 0) {
+    for (var i = 0; i < this.content.length; i++) {
+      channelString.push('\tContent[' + i + ']: ' + this.content[i] + '\n');
+    }
+  } else {
+    channelString.push('\tThis channel is empty');
+  }
+  return channelString.join().replace(/,/g, '');
+};
+
+
 
 /**
  * Holds a variable
@@ -313,3 +332,25 @@ function Variable(variableName) {
   this.variableName = variableName;
   this.content = null;
 }
+
+
+/**
+ * Returns the variable in string form
+ *
+ * @this {Variable}
+ * @return {string}
+ */
+Variable.prototype.toString = function() {
+  var channelString = ['Variable name: \'' + this.variableName + '\' ->\n'];
+  if (!!this.content) {
+    if (typeof this.content === 'string') {
+      channelString.push('\tContent: ' + this.content + '\n');
+    } else {
+      channelString.push('\tContent: ' + this.content.toString() + '\n');
+    }
+  } else {
+    channelString.push('\tThis variable is empty\n');
+  }
+  return channelString.join().replace(/,/g, '');
+};
+

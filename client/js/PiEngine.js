@@ -8,7 +8,6 @@ function PiEngine() {
   this.agents = {};
   this.processGroups = [];
 
-  this.isExecuted = false;
   this.channels = {};
   this.variables = {};
 
@@ -27,9 +26,8 @@ PiEngine.prototype.execute = function() {
     for (var i = 0; i < this.processGroups.length; i++) {
       this.processGroups[i].doProcesses();
     }
-    this.isExecuted = true;
   } else {
-    log.debug('There are no current processes');
+    log.info('There are no current processes');
   }
 };
 
@@ -142,7 +140,6 @@ PiEngine.prototype.toString = function() {
     engineString.push('\nAgents ->\n');
     var agentKeys = Object.keys(this.agents);
     for (var i = 0; i < agentKeys.length; i++) {
-      engineString.push('Agent name: \'' + agentKeys[i] + '\' ->\n');
       engineString.push(this.agents[agentKeys[i]].toString() + '\n');
     }
   }
@@ -154,22 +151,19 @@ PiEngine.prototype.toString = function() {
     }
   }
 
-  if (this.isExecuted) {
-    engineString.push('Executed:\n');
-    if (!jQuery.isEmptyObject(this.channels)) {
-      engineString.push('\nChannels ->\n');
-      var channelKeys = Object.keys(this.channels);
-      for (var k = 0; k < channelKeys.length; k++) {
-        engineString.push(this.channels[channelKeys[k]].toString());
-      }
+  if (!jQuery.isEmptyObject(this.channels)) {
+    engineString.push('\nChannels ->\n');
+    var channelKeys = Object.keys(this.channels);
+    for (var k = 0; k < channelKeys.length; k++) {
+      engineString.push(this.channels[channelKeys[k]].toString() + '\n');
     }
+  }
 
-    if (!jQuery.isEmptyObject(this.variables)) {
-      engineString.push('\nVariables ->\n');
-      var variableKeys = Object.keys(this.variables);
-      for (var l = 0; l < variableKeys.length; l++) {
-        engineString.push(this.variables[variableKeys[l]].toString());
-      }
+  if (!jQuery.isEmptyObject(this.variables)) {
+    engineString.push('\nVariables ->\n');
+    var variableKeys = Object.keys(this.variables);
+    for (var l = 0; l < variableKeys.length; l++) {
+      engineString.push(this.variables[variableKeys[l]].toString() + '\n');
     }
   }
 

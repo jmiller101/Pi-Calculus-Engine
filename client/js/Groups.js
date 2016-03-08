@@ -112,7 +112,7 @@ function ProcessGroup(processesString) {
     } else if (parallelProcessArray.length > 0) {
       this.doSequentialProcesses(parallelProcessArray[0]);
     } else {
-      handleError('Error executing process group: sequential process array ' +
+      log.warn('Error executing process group: sequential process array ' +
           'is invalid');
     }
   };
@@ -179,7 +179,7 @@ ProcessGroup.prototype.doProcesses = function() {
   } else if (this.indeterminates.length > 0) {
     this.doParallelProcesses(this.indeterminates[0]);
   } else {
-    handleError('Error executing process group: parallel process array is ' +
+    log.warn('Error executing process group: parallel process array is ' +
         'invalid');
   }
 };

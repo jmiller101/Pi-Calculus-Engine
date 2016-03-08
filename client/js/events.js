@@ -1,7 +1,7 @@
 // Initialize the engine
 var engine = new PiEngine();
 // Set up logging
-var log = new Logger(false, LogLevel.TRACE);
+var log = new Logger(false, LogLevel.DEBUG);
 
 // Entry point for the engine
 $(document).ready(function() {
@@ -23,25 +23,25 @@ $(document).ready(function() {
         engine.processInput(input);
         engineInput.val('');
       } else {
-        handleError('Input was invalid!');
+        log.warn('Input was invalid!');
       }
     }
   });
 
   executeEngine.mousedown(function() {
-    log.debug('Executing...');
+    log.info('Executing...');
     engine.execute();
   });
 
   // Clears the Pi Engine
   clearEngine.mousedown(function() {
-    log.debug('Clearing...');
+    log.info('Clearing...');
     engine = new PiEngine();
   });
 
   // Prints the state of the Pi Engine
   printEngine.mousedown(function() {
-    log.debug(engine.toString());
+    log.output(engine.toString());
   });
 
   // Runs the engine test
@@ -50,13 +50,3 @@ $(document).ready(function() {
     engine = new PiEngine();
   });
 });
-
-
-/**
- * A wrapper for handling errors that occur
- *
- * @param {string} message
- */
-function handleError(message) {
-  log.warn(message);
-}
