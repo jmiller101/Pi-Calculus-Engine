@@ -85,6 +85,7 @@ Run processes sequentially:
 
 For testing purposes, print a value:
 `print(<variable>)` or `print('<string_literal>')`
+
 Print multiple values and string literals:
 `print(<variable>, '<string_literal>')`
 
