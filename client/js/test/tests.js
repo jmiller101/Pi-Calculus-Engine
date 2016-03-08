@@ -26,9 +26,7 @@ function TestRunner() {
     var testString = 'print(\'1\') . print(\'2\') . print(\'3\')';
     var expectedOutput = '1,2,3';
 
-    var input = new EngineInput(testString);
-    engine.processInput(input);
-    engine.execute();
+    this.processAndExecute(testString);
     if (this.verifyOutput(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
@@ -42,9 +40,7 @@ function TestRunner() {
     var testString = 'print(\'1\') | print(\'2\') | print(\'3\')';
     var expectedOutput = ['1,2,3', '2,3,1', '3,1,2', '1,3,2', '2,1,3', '3,2,1'];
 
-    var input = new EngineInput(testString);
-    engine.processInput(input);
-    engine.execute();
+    this.processAndExecute(testString);
     if (this.verifyMultiplePossibleOutputs(expectedOutput)) {
       log.test('TEST PASS\n\n');
     } else {
@@ -70,7 +66,7 @@ function TestRunner() {
     log.test('--- Running channel transfer test ---');
     this.resetEngine();
     var testString = 'new(a) . a!\'Hello world\' . a?x . print(x)';
-    var expectedOutput = 'Hello, world!';
+    var expectedOutput = 'Hello world';
 
     this.processAndExecute(testString);
     if (this.verifyOutput(expectedOutput)) {
