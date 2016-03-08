@@ -133,6 +133,10 @@ PiEngine.prototype.getErrors = function() {
  * @return {string}
  */
 PiEngine.prototype.toString = function() {
+  if (this.inputs.length < 1) {
+    return 'The engine has no inputs';
+  }
+
   var engineString = [];
   engineString.push('State:\n');
 

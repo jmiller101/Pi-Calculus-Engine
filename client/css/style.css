@@ -1,0 +1,41 @@
+* {
+    font-family: "Source Code Pro", Menlo, sans-serif;
+    text-align: center;
+}
+
+#header {
+    margin-top: 2%;
+    margin-bottom: 5%;
+}
+
+input {
+    text-align: left;
+}
+
+.button {
+    color: black;
+    border-radius: 10px;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 8px 6px;
+    text-decoration: none;
+    border: 4px outset #000000;
+    margin-right: 2%;
+    margin-top: 3%;
+    margin-left: 5%;
+    margin-bottom: 3%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.button:hover {
+    text-decoration: none;
+}
+
+.button:active {
+    position: relative;
+    top: 1px;
+}
