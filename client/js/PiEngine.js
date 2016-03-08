@@ -41,7 +41,7 @@ PiEngine.prototype.execute = function() {
  */
 PiEngine.prototype.processInput = function(input) {
   if (!input.isValid) {
-    log.error('Invalid input was passed to PiEngine');
+    log.warn('Invalid input was passed to PiEngine');
   }
   var inputString = input.input;
 

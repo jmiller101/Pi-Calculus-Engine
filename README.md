@@ -1,19 +1,24 @@
 # Pi-Calculus-Engine
 
 ###Limitations
-This engine was written to parse and execute simple Pi Calculus statements. You'll notice that I've used the word
+This engine was written to parse and execute simple Pi Calculus statements. The emphasis is on Pi Calculus, not on
+writing a perfect parser. That in an of itself would be a project all its own. So, you'll notice that I've used the word
 simple, so what does that entail?
   1. You cannot pass a channel through another channel
   2. Instead of processes running in parallel, they will run sequentially (but in random order)
     1. This is because there is no such thing as parallelism in JavaScript
     2. Without doing some funky voodoo and arbitrarily switching between concurrent tasks, there isn't a good way of
-    implementing it. At that point the challenge doesn't lie with implementing Pi Calculus with with making a runtime
-    environment, which felt outside the scope of the project
+    implementing it. At that point the challenge doesn't lie with implementing Pi Calculus with with making a full
+    runtime environment, which felt outside the scope of the project
+    3. Due to this lack of parallelism you MUST create a new channel (e.g. `new(a)`) before attempting to run a
+    statement that requires it
   3. You are free to do a recursive task (such as calling an agent from within itself), however due to the lack of
   parallelism, it will likely never change after the first couple iterations. It will also probably lead to a stack
   overflow and your browser freezing as it trying to process it infinitely
   4. There is no replication because it leads to a stock overflow and browser freezing
-  5. Only single-quotes should be used when writing string literals
+  5. String literals...
+    1. Should always use single-quotes
+    2. Should never include the banned characters: '!', '?', ','
 
 ---
 ###Usage

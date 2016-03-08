@@ -56,8 +56,11 @@ function Process(processString) {
     var channel = engine.channels[this.content['channel']];
     if (!!channel) {
       for (var i = 0; i < this.content['variable'].length; i++) {
+        var readValue = channel.read();
         var variable = new Variable(this.content['variable'][i]);
-        variable.content = channel.read();
+        log.output('Reading \'' + readValue + '\' from channel ' +
+            channel.channelName + ' to variable ' + variable.variableName);
+        variable.content = readValue;
         engine.addVariable(variable);
       }
     } else {
@@ -77,13 +80,16 @@ function Process(processString) {
           .split(/,/);
       for (var i = 0; i < thingsToWrite.length; i++) {
         if (checkString(thingsToWrite[i])) {
+          log.debug('Preparing to write [' + thingsToWrite[i] + ']');
           this.content['value'].push(thingsToWrite[i]);
         } else {
           engine.addError('Found invalid value in write');
         }
       }
     } else {
-      this.content['value'].push(writeStrings[1].trim());
+      var valueToWrite = writeStrings[1].trim();
+      log.debug('Preparing to write \'' + valueToWrite + '\'');
+      this.content['value'].push(valueToWrite);
     }
   };
 
@@ -92,10 +98,14 @@ function Process(processString) {
     if (!!channel) {
       for (var i = 0; i < this.content['value'].length; i++) {
         if (this.content['value'][i].indexOf('\'') > -1) {
+          log.output('Writing ' + this.content['value'][i] + ' to the ' +
+              'channel ' + channel.channelName);
           channel.write(this.content['value'][i]);
         } else {
           var variable = engine.variables[this.content['value'][i]];
           if (!!variable) {
+            log.output('Writing \'' + variable.content + '\' to the channel ' +
+                channel.channelName);
             channel.write(variable.content);
           } else {
             engine.addError('Cannot output from uninitialized variable: ' +
@@ -135,7 +145,9 @@ function Process(processString) {
         log.debug('Trimmed: ' + valueToPrint);
         typeToPrint = 'Input string';
       } else {
+        log.debug('Full value: ' + engine.variables[string].content);
         valueToPrint = this.getQuoteValue(engine.variables[string].content);
+        log.debug('Trimmed: ' + valueToPrint);
         typeToPrint = 'Variable string';
       }
       if (!!valueToPrint) {
@@ -163,6 +175,7 @@ function Process(processString) {
   this.doChannel = function() {
     for (var i = 0; i < this.content['channels'].length; i++) {
       var newChannel = new Channel(this.content['channels'][i]);
+      log.output('Created new channel ' + newChannel.channelName);
       engine.addChannel(newChannel);
     }
   };
@@ -175,6 +188,7 @@ function Process(processString) {
   this.doAgent = function() {
     var agent = engine.agents[this.content['agent']];
     if (!!agent) {
+      log.output('Processing agent ' + agent.agentName);
       agent.processes.doProcesses();
     } else {
       engine.addError('Agent \'' + this.content['agent'] + '\' has not been ' +
